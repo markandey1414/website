@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Go-Faasssttt</title>
+    <style>
+      
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+
+      #header {
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+      }
+
+      #header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 80px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      #logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+      }
+
+      #search-form {
+        display: flex;
+        align-items: center;
+      }
+
+      #search-form input[type="text"] {
+        width: 60%;
+        height: 40px;
+        margin-right: 10px;
+        padding: 0 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      #search-form input[type="submit"] {
+        width: 20%;
+        height: 40px;
+        background-color: #00bfff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+
+      #nav li {
+        margin: 0 20px;
+      }
+
+      #nav a {
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      #nav a:hover {
+        color: #00bfff;
+      }
+
+      #user-menu {
+        display: none;
+      }
+
+      #user-menu a {
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      #user-menu a:hover {
+        color: #00bfff;
+      }
+
+      #cart-link {
+        position: relative;
+      }
+
+      #cart-link::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 20px;
+        height: 20px;
+        background-color: #00bfff;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      #categories {
+        background-color: #f2f2f2;
+        padding: 20px 0;
+      }
+
+      #categories ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      #categories li {
+        width: 20%;
+      }
+
+      #categories a {
+        display: block;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+        text-decoration: none;
+      }
+
+      #categories a:hover {
+        background-color: #00bfff;
+        color: #fff;
+      }
+
+      #results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 0;
+      }
+
+      .item {
+        width: 25%;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .item img {
+        width: 100%;
+      }
+
+      .item h3 {
+        margin: 10px 0;
+        font-size: 16px;
+      }
+
+      .item p {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .item button {
+        width: 100%;
+        height: 40px;
+        background-color: #00bfff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .item button:hover {
+        background-color: #00a3e0;
+      }
+
+      #sign-in-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      #sign-in-modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 300px;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+      }
+
+      #sign-in-modal-content h2 {
+        margin: 0;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      #sign-in-modal-content form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #sign-in-modal-content form label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      #sign-in-modal-content form input[type="text"],
+      #sign-in-modal-content form input[type="password"] {
+        width: 60%;
+        height: 40px;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      #sign-in-modal-content form input[type="submit"] {
+        width: 20%;
+        height: 40px;
+        background-color: #00bfff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #sign-in-modal-content form input[type="submit"]:hover {
+        background-color: #00a3e0;
+      }
+
+      #close-sign-in-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+      }
+
+      #close-sign-in-modal:hover {
+        color: #00bfff;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div id="header-content">
+        <a href="#" id="logo">Go-Faasssttt</a>
+        <form id="search-form">
+          <input type="text" placeholder="Search for products">
+          <input type="submit" value="Search">
+        </form>
+        <nav id="nav">
+          <ul>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#" id="sign-in-link">Sign In</a></li>
+            <li id="user-menu">
+              <a href="#" id="account-link">Account</a>
+              <a href="#" id="orders-link">Orders</a>
+              <a href="#" id="cart-link">Cart</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section id="categories">
+      <ul>
+        <li><a href="#">Electronics</a></li>
+        <li><a href="#">Home & Kitchen</a></li>
+        <li><a href="#">Beauty & Personal Care</a></li>
+        <li><a href="#">Sports & Outdoors</a></li>
+        <li><a href="#">Tools & Home Improvement</a></li>
+      </ul>
+    </section>
+    <section id="results">
+      <div class="item" id="item-1">
+        <img src="https://via.placeholder.com/200x200" alt="Product image">
+        <h3>Product 1</h3>
+        <p>$10.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item" id="item-2">
+        <img src="https://via.placeholder.com/200x200" alt="Product image">
+        <h3>Product 2</h3>
+        <p>$20.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item" id="item-9">
+        <img src="https://via.placeholder.com/200x200" alt="Product image">
+        <h3>Product 9</h3>
+        <p>$50.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+      <div class="item" id="item-10">
+        <img src="https://via.placeholder.com/200x200" alt="Product image">
+        <h3>Product 10</h3>
+        <p>$60.99</p>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+    </section>
+    <div id="sign-in-modal">
+      <div id="sign-in-modal-content">
+        <span id="close-sign-in-modal">&times;</span>
+        <h2>Sign In</h2>
+        <form>
+          <label for="username">Username</label>
+          <input type="text" id="username">
+          <label for="password">Password</label>
+          <input type="password" id="password">
+          <input type="submit" value="Sign In">
+        </form>
+      </div>
+    </div>
+    <script>
+      // Add your JavaScript code here
+      var cart = [];
+
+      function search() {
+        // Get the search query from the input field
+        var query = document.getElementById('search-form').query.value;
+
+        // Perform the search and update the results
+        var results = searchProducts(query);
+        var resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = '';
+        if (results.length > 0) {
+          for (var i = 0; i < results.length; i++) {
+            var result = results[i];
+            var resultElement = document.createElement('div');
+            resultElement.className = 'item';
+            resultElement.innerHTML = '<img src="' + result.image + '" alt="' + result.name + '"><h3>' + result.name + '</h3><p>$' + result.price + '</p><button class="add-to-cart">Add to Cart</button>';
+            resultElement.getElementsByClassName('add-to-cart')[0].addEventListener('click', function() {
+              addToCart(this.parentNode);
+            });
+            resultsContainer.appendChild(resultElement);
+          }
+        } else {
+          resultsContainer.innerHTML = '<p>No results found.</p>';
+        }
+      }
+
+
+      function addToCart(itemElement) {
+        // Add the item to the shopping cart
+        var item = {
+          id: itemElement.id,
+          name: itemElement.getElementsByTagName('h3')[0].textContent,
+          price: parseFloat(itemElement.getElementsByTagName('p')[0].textContent.substring(1)),
+          image: itemElement.getElementsByTagName('img')[0].src
+        };
+        cart.push(item);
+        updateCartCount();
+      }
+
+      function signIn() {
+        // Sign in the user
+        var username = document.getElementById('sign-in-modal').username.value;
+        var password = document.getElementById('sign-in-modal').password.value;
+        if (signInUser(username, password)) {
+          closeSignInModal();
+          showUserMenu();
+        } else {
+          alert('Invalid username or password');
+        }
+      }
+
+      function closeSignInModal() {
+        // Close the sign in modal
+        var modal = document.getElementById('sign-in-modal');
+        modal.style.display = 'none';
+      }
+
+      function openSignInModal() {
+        // Open the sign in modal
+        var modal = document.getElementById('sign-in-modal');
+        modal.style.display = 'block';
+      }
+
+      function viewAccount() {
+        // Code to view user's account page
+        window.location.href = '/account';
+      }
+
+
+      function viewOrders() {
+        // Code to view user's orders page
+      }
+
+      function viewCart() {
+        // Code to view the shopping cart page
+      }
+
+      function init() {
+        // Add event listeners to the search form, buttons, and links
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+          e.preventDefault();
+          search();
+        });
+        var addToCartButtons = document.getElementsByClassName('add-to-cart');
+        for (var i = 0; i < addToCartButtons.length; i++) {
+          addToCartButtons[i].addEventListener('click', function() {
+            addToCart(this.parentNode);
+          });
+        }
+        document.getElementById('sign-in-link').addEventListener('click', signIn);
+        document.getElementById('sign-in-modal').addEventListener('submit', function(e) {
+          e.preventDefault();
+          signIn();
+        });
+        document.getElementById('close-sign-in-modal').addEventListener('click', closeSignInModal);
+        document.getElementById('account-link').addEventListener('click', viewAccount);
+        document.getElementById('orders-link').addEventListener('click', viewOrders);
+        document.getElementById('cart-link').addEventListener('click', viewCart);
+      }
+
+      // Initialize the page when the DOM is ready
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>
